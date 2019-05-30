@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+  "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+  <context id="postgres" targetRuntime="MyBatis3">
+    <!-- 生成的Java文件的编码 -->
+    <property name="javaFileEncoding" value="UTF-8"/>
+
+    <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+    <!--<plugin type="com.github.pagehelper.PageHelper">-->
+      <!--&lt;!&ndash; 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库&ndash;&gt;-->
+      <!--<property name="dialect" value="postgresql"/>-->
+    <!--</plugin>-->
+    <commentGenerator>
+      <!-- 此值为true时，有可能文件生成重复，Mapper里代码重复 -->
+      <property name="suppressAllComments" value="true"/>
+      <property name="suppressDate" value="true"/>
+    </commentGenerator>
+    <!-- 注释控制完毕 -->
+
+
+    <!-- 数据库链接 -->
+    <jdbcConnection driverClass="org.postgresql.Driver"
+      connectionURL="jdbc:postgresql://localhost:5432/flight" userId="postgres"
+      password="123"/>
+
+    <!-- 指定生成的类型为java类型，避免数据库中number等类型字段 -->
+    <javaTypeResolver>
+      <!-- <property name="forceBigDecimals" value="false" /> -->
+    </javaTypeResolver>
+
+    <!-- 生成model模型，对应的包，存放位置可以指定具体的路径,如/ProjectName/src，也可以使用MAVEN来自动生成 -->
+    <javaModelGenerator targetPackage="com.potter.postgres.domain"
+      targetProject="src/main/java">
+      <property name="enableSubPackages" value="true"/>
+      <property name="trimStrings" value="true"/>
+    </javaModelGenerator>
+
+    <!--对应的xml mapper文件 -->
+    <sqlMapGenerator targetPackage="com.potter.postgres.dao"
+      targetProject="src/main/java">
+      <property name="enableSubPackages" value="true"/>
+    </sqlMapGenerator>
+
+    <!-- 对应的dao接口 -->
+    <javaClientGenerator targetPackage="com.potter.postgres.dao"
+      targetProject="src/main/java"
+      type="XMLMAPPER">
+      <property name="enableSubPackages" value="true"/>
+    </javaClientGenerator>
+
+    <table tableName="t_user" domainObjectName="User">
+      <generatedKey column="id" sqlStatement="SELECT uuid_generate_v4()"/>
+      <columnOverride column="id" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+      <columnOverride column="last_sign_in_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="dept_info" javaType="java.lang.Object" jdbcType="OTHER" typeHandler="com.potter.postgres.config.JSONTypeHandler"></columnOverride>
+      <columnOverride column="role_ids" javaType="java.lang.String[]" jdbcType="OTHER" typeHandler="com.potter.postgres.config.ArrayTypeHandler"></columnOverride>
+      <columnOverride column="menu_ids" javaType="java.lang.String[]" jdbcType="OTHER" typeHandler="com.potter.postgres.config.ArrayTypeHandler"></columnOverride>
+    </table>
+
+    <table tableName="t_role" domainObjectName="Role">
+      <generatedKey column="id" sqlStatement="SELECT uuid_generate_v4()"/>
+      <columnOverride column="id" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+      <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="menu_ids" javaType="java.lang.String[]" typeHandler="com.potter.postgres.config.ArrayTypeHandler"></columnOverride>
+    </table>
+
+    <table tableName="t_menu" domainObjectName="Menu">
+      <generatedKey column="id" sqlStatement="SELECT uuid_generate_v4()"/>
+      <columnOverride column="id" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+      <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+      <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"></columnOverride>
+    </table>
+  </context>
+
+</generatorConfiguration>

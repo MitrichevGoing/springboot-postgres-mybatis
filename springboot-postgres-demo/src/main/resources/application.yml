@@ -1,0 +1,28 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: postgres-demo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flight
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+mybatis:
+  check-config-location: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.potter.postgres.domain.*
+  configuration:
+    map-underscore-to-camel-case: true
+pagehelper:
+  helper-dialect: postgresql
+  reasonable: true
+  support-methods-arguments: true
+
+logging:
+  level:
+    com:
+      potter:
+        postgres:
+          dao: debug
+

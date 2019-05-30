@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.potter.postgres.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.potter.postgres.domain.User">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_guid" jdbcType="VARCHAR" property="userGuid" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="last_sign_in_at" jdbcType="TIMESTAMP" property="lastSignInAt" />
+    <result column="dept_info" jdbcType="OTHER" property="deptInfo" typeHandler="com.potter.postgres.config.JSONTypeHandler" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="role_ids" jdbcType="OTHER" property="roleIds" typeHandler="com.potter.postgres.config.ArrayTypeHandler" />
+    <result column="menu_ids" jdbcType="OTHER" property="menuIds" typeHandler="com.potter.postgres.config.ArrayTypeHandler" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.deptInfoCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.JSONTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.roleIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.menuIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.deptInfoCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.JSONTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.JSONTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.roleIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.menuIdsCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.potter.postgres.config.ArrayTypeHandler} and #{criterion.secondValue,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, username, password, name, user_guid, status, avatar_url, last_sign_in_at, dept_info, 
+    created_at, updated_at, role_ids, menu_ids
+  </sql>
+  <select id="selectByExample" parameterType="com.potter.postgres.domain.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.potter.postgres.domain.UserExample">
+    delete from t_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.potter.postgres.domain.User">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      SELECT uuid_generate_v4()
+    </selectKey>
+    insert into t_user (id, username, password, 
+      name, user_guid, status, 
+      avatar_url, last_sign_in_at, dept_info, 
+      created_at, updated_at, role_ids, 
+      menu_ids
+      )
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{userGuid,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{avatarUrl,jdbcType=VARCHAR}, #{lastSignInAt,jdbcType=TIMESTAMP}, #{deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler}, 
+      #{menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.potter.postgres.domain.User">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      SELECT uuid_generate_v4()
+    </selectKey>
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="userGuid != null">
+        user_guid,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="avatarUrl != null">
+        avatar_url,
+      </if>
+      <if test="lastSignInAt != null">
+        last_sign_in_at,
+      </if>
+      <if test="deptInfo != null">
+        dept_info,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="roleIds != null">
+        role_ids,
+      </if>
+      <if test="menuIds != null">
+        menu_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userGuid != null">
+        #{userGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastSignInAt != null">
+        #{lastSignInAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptInfo != null">
+        #{deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleIds != null">
+        #{roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+      <if test="menuIds != null">
+        #{menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.potter.postgres.domain.UserExample" resultType="java.lang.Long">
+    select count(*) from t_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userGuid != null">
+        user_guid = #{record.userGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatarUrl != null">
+        avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastSignInAt != null">
+        last_sign_in_at = #{record.lastSignInAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deptInfo != null">
+        dept_info = #{record.deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.roleIds != null">
+        role_ids = #{record.roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+      <if test="record.menuIds != null">
+        menu_ids = #{record.menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_user
+    set id = #{record.id,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      user_guid = #{record.userGuid,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      last_sign_in_at = #{record.lastSignInAt,jdbcType=TIMESTAMP},
+      dept_info = #{record.deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      role_ids = #{record.roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      menu_ids = #{record.menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.potter.postgres.domain.User">
+    update t_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userGuid != null">
+        user_guid = #{userGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastSignInAt != null">
+        last_sign_in_at = #{lastSignInAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptInfo != null">
+        dept_info = #{deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleIds != null">
+        role_ids = #{roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+      <if test="menuIds != null">
+        menu_ids = #{menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.potter.postgres.domain.User">
+    update t_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      user_guid = #{userGuid,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      last_sign_in_at = #{lastSignInAt,jdbcType=TIMESTAMP},
+      dept_info = #{deptInfo,jdbcType=OTHER,typeHandler=com.potter.postgres.config.JSONTypeHandler},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      role_ids = #{roleIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler},
+      menu_ids = #{menuIds,jdbcType=OTHER,typeHandler=com.potter.postgres.config.ArrayTypeHandler}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
